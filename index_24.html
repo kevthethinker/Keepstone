@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keepstone — Your company's AI, on your own hardware</title>
+<meta name="description" content="Keepstone is a private, on-premises AI knowledge assistant. Your documents, your hardware, your data — nothing leaves the building.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2312161c'/%3E%3Cpath d='M30 76 L39 24 L50 24 L50 76 Z' fill='%23bdd0c5'/%3E%3Cpath d='M50 76 L50 24 L61 24 L70 76 Z' fill='%235f7269'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Keepstone — Your company's AI, on your own hardware">
+<meta property="og:description" content="A private, on-premises AI knowledge assistant. Your documents, your hardware, your data — nothing leaves the building.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Keepstone — Your company's AI, on your own hardware">
+<meta name="twitter:description" content="A private, on-premises AI knowledge assistant. Your documents, your hardware, your data — nothing leaves the building.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #12161c;
+    --panel: #1b212b;
+    --panel-line: #2a3240;
+    --text: #e8eaed;
+    --text-dim: #9aa3af;
+    --accent: #9db4a8;
+    --accent-light: #bdd0c5;
+    --accent-dim: #5f7269;
+    --steel: #3e5c76;
+    --steel-light: #8fb3d9;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background-color: var(--ink);
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(157,180,168,0.04) 0, transparent 38%),
+      radial-gradient(circle at 82% 55%, rgba(62,92,118,0.05) 0, transparent 42%),
+      radial-gradient(circle at 45% 92%, rgba(157,180,168,0.025) 0, transparent 34%);
+    background-attachment: fixed;
+    color: var(--text);
+    font-family: "Inter", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { font-family: "Roboto Slab", Georgia, serif; }
+
+  a { color: var(--accent); }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .wrap { max-width: 940px; margin: 0 auto; padding: 0 28px; }
+
+  header.top { padding: 30px 0; border-bottom: 1px solid var(--panel-line); }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 11px; font-family: "Roboto Slab", Georgia, serif; font-weight: 700; font-size: 1.35rem; letter-spacing: -0.01em; }
+  .brand svg { flex-shrink: 0; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.35)); }
+
+  nav.top { display: flex; gap: 30px; }
+  nav.top a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  nav.top a:hover { color: var(--text); border-color: var(--accent-dim); }
+
+  section.hero { padding: 96px 0 72px; animation: rise 0.7s ease-out; }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) { section.hero { animation: none; } }
+
+  h1 {
+    font-size: clamp(2.1rem, 4.8vw, 3.1rem);
+    line-height: 1.18;
+    margin: 0 0 22px;
+    max-width: 30ch;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .sub { color: var(--text-dim); font-size: 1.18rem; max-width: 46ch; margin: 0 0 40px; line-height: 1.65; }
+
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 60px; }
+  .btn {
+    display: inline-block;
+    padding: 13px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-family: "Inter", sans-serif;
+    transition: transform 0.12s, box-shadow 0.12s, background 0.12s;
+  }
+  .btn.primary {
+    background: var(--accent);
+    color: #11201a;
+    box-shadow: 0 3px 0 var(--accent-dim), 0 10px 18px -8px rgba(0,0,0,0.55);
+  }
+  .btn.primary:hover { background: var(--accent-light); transform: translateY(-1px); }
+  .btn.secondary { border: 1px solid var(--panel-line); color: var(--text); }
+  .btn.secondary:hover { border-color: var(--steel); background: rgba(62,92,118,0.08); }
+
+  .demo {
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    border-radius: 6px;
+    padding: 24px 26px;
+    font-size: 0.96rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), inset 0 -14px 26px -20px rgba(0,0,0,0.65);
+  }
+  .demo .q { color: var(--text-dim); margin-bottom: 14px; }
+  .demo .q::before { content: "You  "; color: var(--steel-light); font-weight: 600; }
+  .demo .a { margin-bottom: 14px; }
+  .demo .a::before { content: "Keepstone  "; color: var(--accent); font-weight: 600; }
+  .demo .src { font-size: 0.82rem; color: var(--text-dim); border-top: 1px solid var(--panel-line); padding-top: 12px; margin-top: 4px; }
+
+  section.examples { padding: 70px 0; border-top: 1px solid var(--panel-line); }
+  section.examples h2 { font-size: 1.65rem; margin-bottom: 10px; font-weight: 600; }
+  section.examples p.lede { color: var(--text-dim); max-width: 58ch; margin-bottom: 44px; font-size: 1.02rem; }
+  .industry-group { margin-bottom: 44px; }
+  .industry-group:last-child { margin-bottom: 0; }
+  .industry-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--steel-light);
+    margin: 0 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--panel-line);
+  }
+  .examples-coda {
+    margin: 48px 0 0;
+    padding-top: 36px;
+    border-top: 1px solid var(--panel-line);
+    text-align: center;
+    font-family: "Roboto Slab", Georgia, serif;
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    max-width: 62ch;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+  .examples-coda strong { color: var(--text); font-weight: 600; }
+  .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 720px) { .demo-grid { grid-template-columns: 1fr; } }
+
+  section.flow { padding: 70px 0; border-top: 1px solid var(--panel-line); }
+  section.flow h2 { font-size: 1.65rem; margin-bottom: 10px; font-weight: 600; }
+  section.flow p.lede { color: var(--text-dim); max-width: 52ch; margin-bottom: 48px; font-size: 1.02rem; }
+
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; }
+  .steps::before {
+    content: "";
+    position: absolute;
+    top: 9px;
+    left: 4%;
+    right: 4%;
+    height: 1px;
+    background: var(--panel-line);
+  }
+  @media (max-width: 720px) {
+    .steps { grid-template-columns: 1fr 1fr; }
+    .steps::before { display: none; }
+  }
+
+  .step { position: relative; padding-top: 26px; }
+  .step .num {
+    position: absolute;
+    top: 0; left: 0;
+    width: 19px; height: 19px;
+    border-radius: 50%;
+    background: var(--ink);
+    border: 1px solid var(--steel);
+    color: var(--steel-light);
+    font-size: 0.72rem;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step h3 { font-size: 1.02rem; margin: 0 0 8px; font-weight: 600; }
+  .step p { color: var(--text-dim); font-size: 0.89rem; margin: 0; }
+
+  section.why { padding: 70px 0; border-top: 1px solid var(--panel-line); }
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
+  @media (max-width: 720px) { .why-grid { grid-template-columns: 1fr; } }
+  .why-grid svg { margin-bottom: 14px; }
+  .why-grid h3 { font-size: 1.08rem; margin: 0 0 8px; font-weight: 600; }
+  .why-grid p { color: var(--text-dim); font-size: 0.93rem; margin: 0; }
+
+  section.principle { padding: 64px 0; text-align: center; }
+  section.principle p {
+    font-family: "Roboto Slab", Georgia, serif;
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-weight: 600;
+    line-height: 1.4;
+    max-width: 22ch;
+    margin: 0 auto;
+    color: var(--text);
+  }
+
+  section.close {
+    padding: 84px 0 96px;
+    background: var(--panel);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), inset 0 18px 32px -28px rgba(0,0,0,0.7);
+  }
+  section.close h2 { font-size: 1.7rem; max-width: 23ch; margin-bottom: 18px; font-weight: 600; }
+  section.close p.pitch { color: var(--text-dim); max-width: 52ch; margin-bottom: 30px; }
+
+  .contact-form { max-width: 420px; }
+  .contact-form input, .contact-form textarea {
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--panel-line);
+    color: var(--text);
+    border-radius: 4px;
+    padding: 12px 15px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    margin-bottom: 12px;
+    transition: border-color 0.15s;
+  }
+  .contact-form input:focus, .contact-form textarea:focus { border-color: var(--accent-dim); }
+  .contact-form textarea { resize: vertical; min-height: 90px; }
+  .contact-form button { font-family: inherit; cursor: pointer; border: none; }
+  .contact-fallback { margin-top: 18px; font-size: 0.85rem; color: var(--text-dim); }
+
+  footer { border-top: 1px solid var(--panel-line); padding: 30px 0 42px; color: var(--text-dim); font-size: 0.85rem; }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  footer .brand-mark { display: flex; align-items: center; gap: 8px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M30 76 L39 24 L50 24 L50 76 Z" fill="#bdd0c5"/>
+        <path d="M50 76 L50 24 L61 24 L70 76 Z" fill="#5f7269"/>
+        <path d="M30 76 L39 24 L61 24 L70 76 Z" fill="none" stroke="#12161c" stroke-width="2"/>
+      </svg>
+      Keepstone
+    </div>
+    <nav class="top">
+      <a href="#how">How it works</a>
+      <a href="#examples">Examples</a>
+      <a href="#why">Why local</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Your company's AI.<br>Your company's knowledge.<br>Your hardware.</h1>
+    <p class="sub">Keepstone answers questions from your internal documents — contracts, customer records, procedures — without ever sending them to the cloud. It runs entirely on hardware you own.</p>
+
+    <div class="cta-row">
+      <a class="btn primary" href="#contact">Request a pilot</a>
+      <a class="btn secondary" href="#how">See how it works</a>
+    </div>
+  </div>
+</section>
+
+<section class="flow" id="how">
+  <div class="wrap">
+    <h2>Nothing leaves the building</h2>
+    <p class="lede">Documents are read, indexed, and answered on your own machine. There's no API call to a cloud model, no third party ever sees your files.</p>
+
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3>Upload documents</h3><p>PDFs, Word docs, manuals — dropped in through a browser, no IT department required.</p></div>
+      <div class="step"><div class="num">2</div><h3>Index locally</h3><p>The appliance reads and organizes them on-device. Nothing is uploaded anywhere else.</p></div>
+      <div class="step"><div class="num">3</div><h3>Ask a question</h3><p>Instead of digging through folders and binders, employees just ask — the way they'd ask a coworker.</p></div>
+      <div class="step"><div class="num">4</div><h3>Get a cited answer</h3><p>Every answer points back to the exact source, so it can be checked, not just trusted.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="examples" id="examples">
+  <div class="wrap">
+    <h2>Where it earns its keep</h2>
+    <p class="lede">Four industries, two examples each — the kind of gap between two dates, two documents, or two rules that's easy to miss until it costs you.</p>
+
+    <div class="industry-group">
+      <h3 class="industry-label">Local Government</h3>
+      <div class="demo-grid">
+        <div class="demo">
+          <p class="q">What's the required public notice period before a zoning variance hearing?</p>
+          <p class="a">The ordinance requires at least 15 days' published notice before a zoning variance hearing, plus mailed notice to property owners within 250 feet of the parcel.</p>
+          <p class="src">Source: Municipal Code, Chapter 12, "Zoning Variance Procedures" — verify anytime by opening the original document.</p>
+        </div>
+        <div class="demo">
+          <p class="q">When is our final report due for the Community Development Block Grant from last year?</p>
+          <p class="a">The grant agreement requires a final expenditure report within 90 days of project completion. Completion was logged as June 30, 2026, making the report due by September 28, 2026.</p>
+          <p class="src">Source: CDBG Grant Agreement, Section 9, "Reporting Requirements"; Project Completion Log — verify anytime by opening the original documents.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="industry-group">
+      <h3 class="industry-label">Manufacturing</h3>
+      <div class="demo-grid">
+        <div class="demo">
+          <p class="q">If we switch to the new sealant on the gasket line, does that affect our warranty terms with any customers?</p>
+          <p class="a">Yes — the standard customer warranty requires sealants rated for continuous use above 200°F. The proposed sealant's data sheet lists only a 180°F rating, which would void the warranty as written.</p>
+          <p class="src">Source: Customer Warranty Terms, Section 4.1; Sealant X Technical Data Sheet, "Temperature Rating" — verify anytime by opening the original documents.</p>
+        </div>
+        <div class="demo">
+          <p class="q">Is the torque spec in the 2019 assembly manual still correct for the new bracket?</p>
+          <p class="a">No. The 2019 manual lists 35 ft-lb, but Engineering Change Notice EC-114 (2024) raised it to 42 ft-lb for the redesigned bracket. Use the updated spec.</p>
+          <p class="src">Source: Engineering Change Notice EC-114, "Bracket Torque Revision" — supersedes Assembly Manual 2019, Section 6.2.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="industry-group">
+      <h3 class="industry-label">Legal</h3>
+      <div class="demo-grid">
+        <div class="demo">
+          <p class="q">What's the termination notice period in our Ashworth Group service agreement?</p>
+          <p class="a">Either party may terminate with 60 days' written notice, or immediately for uncured material breach after a 15-day cure period.</p>
+          <p class="src">Source: Ashworth Group Master Service Agreement, Section 12, "Termination" — verify anytime by opening the original document.</p>
+        </div>
+        <div class="demo">
+          <p class="q">The Henderson contract renews every March 15 — what's our deadline to send a termination-for-convenience notice?</p>
+          <p class="a">The Henderson Master Agreement requires 90 days' written notice before the renewal date, so notice must be sent no later than December 15 to avoid automatic renewal for another year.</p>
+          <p class="src">Source: Henderson Master Agreement, Section 8, "Term and Renewal" — verify anytime by opening the original document.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="industry-group">
+      <h3 class="industry-label">Healthcare Administration</h3>
+      <div class="demo-grid">
+        <div class="demo">
+          <p class="q">When is Jane Doe's next care plan review due?</p>
+          <p class="a">Jane Doe's last care plan review was completed on June 4, 2026. State regulations require a review at least every 90 days, so the next one is due no later than September 2, 2026.</p>
+          <p class="src">Source: Resident Care Plan Log — Jane Doe; State Long-Term Care Compliance Manual, Section 7, "Care Plan Review Intervals" — verify anytime by opening the original documents.</p>
+        </div>
+        <div class="demo">
+          <p class="q">How many days do we have to submit a claim to Larkspur Health Plan after the date of service?</p>
+          <p class="a">Larkspur Health Plan requires claims to be submitted within 90 days of the date of service; claims submitted after that window are denied regardless of medical necessity.</p>
+          <p class="src">Source: Payer Reference Guide 2026, "Larkspur Health Plan — Timely Filing Requirements" — verify anytime by opening the original document.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="examples-coda">These four are just where we started. <strong>Accounting firms, nonprofits, school districts, insurance agencies, contractors, property management</strong> — any business or agency running on its own documentation works the same way.</p>
+  </div>
+</section>
+
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="why-grid">
+      <div>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9db4a8" stroke-width="1.6"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V5l-8-3Z"/></svg>
+        <h3>Confidential by design</h3>
+        <p>Contracts, patient information, government records — none of it is a fit for a public AI service. Local means it stays put.</p>
+      </div>
+      <div>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9db4a8" stroke-width="1.6"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>
+        <h3>No per-question meter running</h3>
+        <p>One piece of hardware, used as much as you like. No surprise bill for a busy month.</p>
+      </div>
+      <div>
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9db4a8" stroke-width="1.6"><path d="M3 9a15 15 0 0 1 18 0M6.5 13a9 9 0 0 1 11 0M10 17a4 4 0 0 1 4 0"/><path d="M2 2l20 20" stroke="#5f7269"/></svg>
+        <h3>Works without the internet</h3>
+        <p>If your connection drops, the assistant doesn't. It only ever needed your local network.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="principle">
+  <div class="wrap">
+    <p>If it needs an internet connection, it isn't actually private.</p>
+  </div>
+</section>
+
+<section class="close" id="contact">
+  <div class="wrap">
+    <h2>We're building this now, on real hardware.</h2>
+    <p class="pitch">Keepstone is early, deliberately so — we're proving the core idea on real hardware before anything goes to market. We're taking on a small number of early pilot partners: businesses with real internal documentation and real reasons not to send it to a cloud AI service.</p>
+    <form class="contact-form" action="https://formspree.io/f/xwlkzdzy" method="POST">
+      <input type="text" name="name" placeholder="Your name" required>
+      <input type="email" name="email" placeholder="Work email" required>
+      <textarea name="message" placeholder="What's your business, and what would you want to ask it?" required></textarea>
+      <button type="submit" class="btn primary">Send</button>
+    </form>
+    <p class="contact-fallback">Prefer email? Reach us directly at <a href="mailto:info@runkeepstone.com">info@runkeepstone.com</a>.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand-mark">
+      <svg width="16" height="16" viewBox="0 0 100 100" aria-hidden="true">
+        <path d="M30 76 L39 24 L50 24 L50 76 Z" fill="#5f7269"/>
+        <path d="M50 76 L50 24 L61 24 L70 76 Z" fill="#3a4650"/>
+      </svg>
+      <span>Keepstone</span>
+    </div>
+    <span>&copy; 2026</span>
+  </div>
+</footer>
+
+</body>
+</html>
